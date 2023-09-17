@@ -54,6 +54,18 @@ class Renderer {
     this.context.lineTo(x2, y2);
     this.context.stroke();
   }
+
+  rect(x, y, width, height) {
+    this.context.beginPath();
+    this.context.rect(x, y, width, height);
+    this.context.stroke();
+  }
+
+  fillRect(x, y, width, height) {
+    this.context.beginPath();
+    this.context.rect(x, y, width, height);
+    this.context.fill();
+  }
 }
 
 export default new Renderer();
