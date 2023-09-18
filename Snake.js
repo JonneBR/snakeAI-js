@@ -64,11 +64,13 @@ export default class Snake {
   }
 
   //think about what direction to move
-  think() {
-    var maxIndex = 0;
+  think(direction) {
+    console.log("think");
+    var maxIndex = settings.humanPlaying ? direction : 0;
     var max = 0;
     for (let i = 0; i < this.decision.length; i++) {
       if (this.decision[i] > max) {
+        max = this.decision[i];
         maxIndex = i;
       }
     }
@@ -93,6 +95,24 @@ export default class Snake {
     if (this.yVel != settings.SIZE) {
       this.xVel = 0;
       this.yVel = -settings.SIZE;
+    }
+  }
+  moveDown() {
+    if (this.yVel != -settings.SIZE) {
+      this.xVel = 0;
+      this.yVel = settings.SIZE;
+    }
+  }
+  moveLeft() {
+    if (this.xVel != settings.SIZE) {
+      this.xVel = -settings.SIZE;
+      this.yVel = 0;
+    }
+  }
+  moveRight() {
+    if (this.xVel != -settings.SIZE) {
+      this.xVel = settings.SIZE;
+      this.yVel = 0;
     }
   }
 }

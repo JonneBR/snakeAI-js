@@ -51,20 +51,20 @@ class SnakeAI {
     document.addEventListener("keydown", (event) => {
       switch (event.key) {
         case "ArrowUp":
-          this.snake.think();
+          this.snake.think(0);
           this.snake.move();
           break;
         case "ArrowDown":
-          // Handle the down arrow key press
-          console.log("Down arrow key pressed");
+          this.snake.think(1);
+          this.snake.move();
           break;
         case "ArrowLeft":
-          // Handle the left arrow key press
-          console.log("Left arrow key pressed");
+          this.snake.think(2);
+          this.snake.move();
           break;
         case "ArrowRight":
-          // Handle the right arrow key press
-          console.log("Right arrow key pressed");
+          this.snake.think(3);
+          this.snake.move();
           break;
         default:
         // Handle other key presses (if needed)
