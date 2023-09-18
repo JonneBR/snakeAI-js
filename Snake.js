@@ -8,6 +8,8 @@ export default class Snake {
     this.xVel;
     this.yVel;
 
+    this.decision; //snakes decision
+
     this.head;
 
     this.body; //snakes body
@@ -16,6 +18,7 @@ export default class Snake {
 
     this.food = new Food();
     this.body = new Array();
+    this.decision = new Array(4);
 
     this.head = new Vector(800, settings.height / 2);
     this.body.push(new Vector(800, settings.height / 2 + settings.SIZE)); //new Vector(800, 420)
@@ -57,6 +60,32 @@ export default class Snake {
       this.body[i].y = tempy;
       tempx = temp2x;
       tempy = temp2y;
+    }
+  }
+
+  //think about what direction to move
+  think() {
+    var maxIndex = 0;
+    var max = 0;
+    for (let i = 0; i < this.decision.length; i++) {
+      if (this.decision[i] > max) {
+        maxIndex = i;
+      }
+    }
+
+    switch (maxIndex) {
+      case 0:
+        this.moveUp();
+        break;
+      case 1:
+        this.moveDown();
+        break;
+      case 2:
+        this.moveLeft();
+        break;
+      case 3:
+        this.moveRight();
+        break;
     }
   }
 

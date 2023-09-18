@@ -15,9 +15,11 @@ class SnakeAI {
   setup() {
     renderer.setup(settings.width, settings.height);
 
-    if (settings.humanPlaying) {
-      this.snake = new Snake();
-    }
+    this.snake = new Snake();
+
+    // if (settings.humanPlaying) {
+    //   this.snake = new Snake();
+    // }
 
     renderer.start(() => this.draw());
     this.keyPressed();
@@ -38,6 +40,10 @@ class SnakeAI {
 
     if (settings.humanPlaying) {
       this.snake.show();
+    } else {
+      this.snake.think();
+      this.snake.move();
+      this.snake.show();
     }
   }
 
@@ -45,7 +51,7 @@ class SnakeAI {
     document.addEventListener("keydown", (event) => {
       switch (event.key) {
         case "ArrowUp":
-          this.snake.moveUp();
+          this.snake.think();
           this.snake.move();
           break;
         case "ArrowDown":
