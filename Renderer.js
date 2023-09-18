@@ -16,15 +16,21 @@ class Renderer {
     this.canvas.width = this.width;
     this.canvas.height = this.height;
 
+    this.stopAnimation = false;
+    this.animating = false;
+
     this.backgroundColor = "#000000";
   }
 
   start(drawCallback) {
     this.drawCallback = drawCallback;
+    this.stopAnimation = false;
     this.animate();
   }
 
   clear() {
+    this.context.clearRect(0, 0, this.canvas.width, this.height);
+    this.context.fillStyle = this.backgroundColor;
     this.context.fillRect(0, 0, this.canvas.width, this.height);
   }
 
@@ -37,6 +43,12 @@ class Renderer {
   }
 
   animate() {
+    this.animating = true;
+    if (this.stopAnimation) {
+      this.animating = false;
+      return;
+    }
+    this.animationID = requestAnimationFrame(() => this.animate());
     this.render();
     this.present();
   }

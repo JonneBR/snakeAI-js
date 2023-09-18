@@ -5,6 +5,9 @@ import { settings } from "./SnakeAI.js";
 
 export default class Snake {
   constructor(argument) {
+    this.xVel;
+    this.yVel;
+
     this.head;
 
     this.body; //snakes body
@@ -21,7 +24,6 @@ export default class Snake {
 
   //show the snake
   show() {
-    console.log(this.body);
     this.food.show();
     renderer.fillStyle("rgb(255,255,255)");
     renderer.strokeStyle("rgb(0,0,0)");
@@ -33,5 +35,35 @@ export default class Snake {
     renderer.fillStyle("grey");
     renderer.fillRect(this.head.x, this.head.y, settings.SIZE, settings.SIZE);
     renderer.rect(this.head.x, this.head.y, settings.SIZE, settings.SIZE);
+  }
+
+  //move the snake
+  move() {
+    this.shiftBody();
+  }
+
+  //shift the body to follow the head
+  shiftBody() {
+    let tempx = this.head.x;
+    let tempy = this.head.y;
+    this.head.x += this.xVel;
+    this.head.y += this.yVel;
+    let temp2x;
+    let temp2y;
+    for (let i = 0; i < this.body.length; i++) {
+      temp2x = this.body[i].x;
+      temp2y = this.body[i].y;
+      this.body[i].x = tempx;
+      this.body[i].y = tempy;
+      tempx = temp2x;
+      tempy = temp2y;
+    }
+  }
+
+  moveUp() {
+    if (this.yVel != settings.SIZE) {
+      this.xVel = 0;
+      this.yVel = -settings.SIZE;
+    }
   }
 }

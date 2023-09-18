@@ -20,6 +20,7 @@ class SnakeAI {
     }
 
     renderer.start(() => this.draw());
+    this.keyPressed();
   }
 
   draw() {
@@ -36,9 +37,33 @@ class SnakeAI {
     );
 
     if (settings.humanPlaying) {
-      // this.snake.move();
       this.snake.show();
     }
+  }
+
+  keyPressed() {
+    document.addEventListener("keydown", (event) => {
+      switch (event.key) {
+        case "ArrowUp":
+          this.snake.moveUp();
+          this.snake.move();
+          break;
+        case "ArrowDown":
+          // Handle the down arrow key press
+          console.log("Down arrow key pressed");
+          break;
+        case "ArrowLeft":
+          // Handle the left arrow key press
+          console.log("Left arrow key pressed");
+          break;
+        case "ArrowRight":
+          // Handle the right arrow key press
+          console.log("Right arrow key pressed");
+          break;
+        default:
+        // Handle other key presses (if needed)
+      }
+    });
   }
 }
 
