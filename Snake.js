@@ -25,6 +25,19 @@ export default class Snake {
     this.body.push(new Vector(800, settings.height / 2 + 2 * settings.SIZE)); //new Vector(800, 440)
   }
 
+  wallCollide(x, y) {
+    if (
+      x >= settings.width - settings.SIZE ||
+      x < 400 + settings.SIZE ||
+      y >= settings.height - settings.SIZE ||
+      y < settings.SIZE
+    ) {
+      alert("died");
+      return true;
+    }
+    return false;
+  }
+
   //show the snake
   show() {
     this.food.show();
@@ -43,6 +56,7 @@ export default class Snake {
   //move the snake
   move() {
     this.shiftBody();
+    this.wallCollide(this.head.x, this.head.y);
   }
 
   //shift the body to follow the head
