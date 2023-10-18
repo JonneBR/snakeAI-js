@@ -2,6 +2,8 @@ export const settings = {
   width: 1200,
   height: 800,
   SIZE: 20,
+  hidden_nodes: 16,
+  hidden_layers: 2,
   humanPlaying: true,
 };
 
@@ -41,18 +43,33 @@ class SnakeAI {
     if (settings.humanPlaying) {
       this.snake.show();
     } else {
+      //------Should be in a Population.js---------
+      this.snake.look();
       this.snake.think();
       this.snake.move();
+      //------Call method update from Population.js----------
+      // this.pop.update();
       this.snake.show();
     }
+  }
+
+  action(direction) {
+    //------Population---------
+    this.snake.look();
+    this.snake.think(direction);
+    this.snake.move();
+    //----------------
+    // this.pop.look();
+    this.snake.show();
   }
 
   keyPressed() {
     document.addEventListener("keydown", (event) => {
       switch (event.key) {
         case "ArrowUp":
-          this.snake.think(0);
-          this.snake.move();
+          this.action(0);
+          // this.snake.think(0);
+          // this.snake.move();
           break;
         case "ArrowDown":
           this.snake.think(1);

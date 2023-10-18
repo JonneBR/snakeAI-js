@@ -2,12 +2,14 @@ import renderer from "./Renderer.js";
 import Vector from "./Vector.js";
 import Food from "./Food.js";
 import { settings } from "./SnakeAI.js";
+import NeuralNet from "./NeuralNet.js";
 
 export default class Snake {
   constructor(argument) {
     this.xVel;
     this.yVel;
 
+    this.vision; //snakes vision
     this.decision; //snakes decision
 
     this.head;
@@ -15,14 +17,27 @@ export default class Snake {
     this.body; //snakes body
 
     this.food;
+    this.brain;
 
-    this.food = new Food();
-    this.body = new Array();
-    this.decision = new Array(4);
-
-    this.head = new Vector(800, settings.height / 2);
-    this.body.push(new Vector(800, settings.height / 2 + settings.SIZE)); //new Vector(800, 420)
-    this.body.push(new Vector(800, settings.height / 2 + 2 * settings.SIZE)); //new Vector(800, 440)
+    if (argument == null || typeof argument == "number") {
+      let layers;
+      if (argument == null) {
+        layers = settings.hidden_layers;
+      } else {
+        layers = argument;
+      }
+      this.head = new Vector(800, settings.height / 2);
+      this.food = new Food();
+      this.body = new Array();
+      if (true) {
+        this.vision = new Array(24).fill(0);
+        this.decision = new Array(4);
+        // Fazer teste de mesa na classe NeuralNet e subsequentes.
+        this.brain = new NeuralNet(24, settings.hidden_nodes, 4, layers); //24 //16 //4 //2
+        this.body.push(new Vector(800, settings.height / 2 + settings.SIZE)); //new Vector(800, 420)
+        this.body.push(new Vector(800, settings.height / 2 + 2 * settings.SIZE)); //new Vector(800, 440)
+      }
+    }
   }
 
   wallCollide(x, y) {
@@ -77,9 +92,38 @@ export default class Snake {
     }
   }
 
+  //look in all 8 directions and check for food, body and wall
+  look() {
+    //look to left
+    this.vision = new Array(24).fill(0);
+    let temp = this.lookInDirection(new Vector(-settings.SIZE, 0));
+    //food
+    this.vision[0] = temp[0];
+    //body
+    this.vision[1] = temp[1];
+    //wall
+    this.vision[2] = temp[2];
+  }
+
+  //look in a direction and check for food, body and wall
+  lookInDirection(direction) {
+    let look = new Array(3).fill(0);
+    let pos = new Vector(this.head.x, this.head.y);
+    var distance = 0;
+    pos.add(direction);
+    distance += 1;
+
+    while (!this.wallCollide(pos.x, pos.y)) {
+      pos.add(direction);
+      distance += 1;
+    }
+
+    look[2] = 1 / distance;
+    return look;
+  }
+
   //think about what direction to move
   think(direction) {
-    console.log("think");
     var maxIndex = settings.humanPlaying ? direction : 0;
     var max = 0;
     for (let i = 0; i < this.decision.length; i++) {
